@@ -52,15 +52,12 @@ class Record:
             try:
                 birth = datetime.strptime(birthday, "%d.%m.%Y")
                 today = datetime.today()
-
                 if (today.month == birth.month and today.day >= birth.day or today.month > birth.month):
                     nextBirthdayYear = today.year + 1
                 else:
                     nextBirthdayYear = today.year
-
                 nextBirthday = datetime(
                     nextBirthdayYear, birth.month, birth.day)
-
                 return (nextBirthday - today).days
             except:
                 return "Wrong date"
