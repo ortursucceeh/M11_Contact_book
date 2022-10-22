@@ -8,7 +8,7 @@ class AdressBook(UserDict):
     def add_record(self, record):
         self.data[record.name.value] = record
 
-    def iterator():
+    def iterator(self, N: int):
         pass
 
 
@@ -16,14 +16,8 @@ class Record:
 
     def __init__(self, name, phone=None, birthday=None):
         self.name = Name(name)
-        if birthday is not None:
-            self.birthday = Birthday(birthday)
-        else:
-            self.birthday = None
-        if phone:
-            self.phones = [Phone(phone)]
-        else:
-            self.phones = []
+        self.birthday = Birthday(birthday) if birthday else None
+        self.phones = [Phone(phone)] if phone else []
 
     def add_phone(self, phone):
         self.phones.append(Phone(phone))
@@ -48,19 +42,17 @@ class Record:
 
     @staticmethod
     def day_to_birthday(birthday):
-        if birthday:
-            try:
-                birth = datetime.strptime(birthday, "%d.%m.%Y")
-                today = datetime.today()
-                if (today.month == birth.month and today.day >= birth.day or today.month > birth.month):
-                    nextBirthdayYear = today.year + 1
-                else:
-                    nextBirthdayYear = today.year
-                nextBirthday = datetime(
-                    nextBirthdayYear, birth.month, birth.day)
-                return (nextBirthday - today).days
-            except:
-                return "Wrong date"
+        try:
+            birth = datetime.strptime(birthday, "%d.%m.%Y")
+            today = datetime.today()
+            if (today.month == birth.month and today.day >= birth.day or today.month > birth.month):
+                nextBirthdayYear = today.year + 1
+            else:
+                nextBirthdayYear = today.year
+            nextBirthday = datetime(nextBirthdayYear, birth.month, birth.day)
+            return (nextBirthday - today).days
+        except:
+            return "Wrong date"
 
 
 class Field:

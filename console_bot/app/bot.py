@@ -1,6 +1,6 @@
 import functools
 from art import tprint
-from entities import AdressBook, Record, Birthday
+from entities import AdressBook, Record
 from constants import HELLO_WORDS, EXIT_WORDS
 
 
@@ -56,13 +56,13 @@ def change_contact(name, new_number=None):
 @input_error
 def show_all_contacts(*args):
     """Func which shows all contacts"""
-    tprint("All contacts:", font="tarty2")
-    result = []
-    for key, value in contacts.items():
-        if len(key) > 8:
-            key = key[:8] + '...'
-        phones = ', '.join([phone.value for phone in value.phones])
-        result.append(f"[+] {key.capitalize(): <12}: {phones}")
+    #tprint("All contacts:", font="tarty2")
+    result = [f"{'NAME': ^17} {'BIRTHDAY': ^14} {'PHONES': ^13}"]
+    for key, rec in contacts.items():
+        key = key[:8] + '...' if len(key) > 8 else key
+        phones = ', '.join([phone.value for phone in rec.phones])
+        bd = rec.birthday.value if rec.birthday else '-'
+        result.append(f"[+] {key.capitalize(): <12} | {bd: ^12} | {phones}")
     return '\n'.join(result)
 
 
@@ -102,6 +102,7 @@ def add_phone(name, number):
         return f"Unknown name"
 
 
+@input_error
 def show_days_to_birthday(name, *args):
     name = name.lower()
     if contacts[name].birthday is None:
@@ -111,12 +112,11 @@ def show_days_to_birthday(name, *args):
         if data:
             days = Record.day_to_birthday(data)
             return f"To {name.capitalize()}'s birthday left {days} days!"
-        else:
-            return f"Doesn't have '{name.capitalize()}' birthday info"
-    else:
-        return f"Contact with name '{name.capitalize()}' doensn't exist"
+        return f"Doesn't have '{name.capitalize()}' birthday info"
+    return f"Contact with name '{name.capitalize()}' doesn't exist"
 
 
+@input_error
 def add_bd(name, birthday, *args):
     return contacts[name.lower()].add_birthday(birthday)
 
@@ -160,11 +160,12 @@ if __name__ == "__main__":
     contacts = AdressBook()
     contacts.add_record(Record("liza", "123", "03.05.2005"))
     contacts.add_record(Record("artur", "7878", "29.02.2003"))
-    contacts.add_record(Record("karina", "3711323", "15.05.2003"))
-    contacts.add_record(Record("vlad", "987987", "15.06.2003"))
     contacts.add_record(Record("olya", "65446", "12.08.2003"))
+    contacts.add_record(Record("karina", "3711323"))
+    contacts.add_record(Record("vlad", "987987", "15.06.2003"))
     contacts.add_record(Record("egor", "16454", "22.04.2003"))
-    contacts.add_record(Record("miha", "654987", "23.09.2003"))
+    contacts.add_record(Record("miha", "654987"))
     contacts.add_record(Record("nikita", "13213879", "06.06.2003"))
+    contacts.add_record(Record("vladimirovich", "13213879", "06.06.2003"))
 
     main()
