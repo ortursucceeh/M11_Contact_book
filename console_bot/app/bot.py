@@ -131,7 +131,7 @@ def show_days_to_birthday(name, *args):
 
 
 @input_error
-def add_bd(name, birthday, *args):
+def add_birthday(name, birthday, *args):
     return contacts[name.lower()].add_birthday(birthday)
 
 
@@ -147,7 +147,7 @@ handler = {
     "add_phone": add_phone,
     "remove_phone": remove_phone,
     "change_phone": change_phone,
-    "add_bd": add_bd,
+    "add_birthday": add_birthday,
     "days_to_bd": show_days_to_birthday
 }
 
