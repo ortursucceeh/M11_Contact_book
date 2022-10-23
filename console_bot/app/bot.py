@@ -148,7 +148,7 @@ handler = {
     "remove_phone": remove_phone,
     "change_phone": change_phone,
     "add_birthday": add_birthday,
-    "days_to_bd": show_days_to_birthday
+    "days_to_birthday": show_days_to_birthday
 }
 
 
