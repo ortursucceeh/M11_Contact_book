@@ -3,13 +3,16 @@ from datetime import datetime
 import re
 
 
-class AdressBook(UserDict):
+class AddressBook(UserDict):
 
     def add_record(self, record):
         self.data[record.name.value] = record
+        self.start = 0
+        self.end = 0
 
     def iterator(self, N: int):
-        pass
+        self.start, self.end = self.end, self.end + N
+        yield from ((key, self.data[key]) for key in list(self.data.keys())[self.start:self.end])
 
 
 class Record:

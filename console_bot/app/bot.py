@@ -1,6 +1,6 @@
 import functools
 from art import tprint
-from entities import AdressBook, Record
+from entities import AddressBook, Record
 from constants import HELLO_WORDS, EXIT_WORDS
 
 
@@ -56,13 +56,27 @@ def change_contact(name, new_number=None):
 @input_error
 def show_all_contacts(*args):
     """Func which shows all contacts"""
-    #tprint("All contacts:", font="tarty2")
     result = [f"{'NAME': ^17} {'BIRTHDAY': ^14} {'PHONES': ^13}"]
     for key, rec in contacts.items():
         key = key[:8] + '...' if len(key) > 8 else key
         phones = ', '.join([phone.value for phone in rec.phones])
         bd = rec.birthday.value if rec.birthday else '-'
         result.append(f"[+] {key.capitalize(): <12} | {bd: ^12} | {phones}")
+    return '\n'.join(result)
+
+
+@input_error
+def show_n_contacts(N, *args):
+    """Func which shows N contacts"""
+    result = [f"{'NAME': ^17} {'BIRTHDAY': ^14} {'PHONES': ^13}"]
+    for item in contacts.iterator(int(N)):
+        key, rec = item[0], item[1]
+        key = key[:8] + '...' if len(key) > 8 else key
+        phones = ', '.join([phone.value for phone in rec.phones])
+        bd = rec.birthday.value if rec.birthday else '-'
+        result.append(f"[+] {key.capitalize(): <12} | {bd: ^12} | {phones}")
+    if len(result) == 1:
+        return f"No more contacts left!"
     return '\n'.join(result)
 
 
@@ -126,7 +140,8 @@ handler = {
     "add": add_contact,
     "change": change_contact,
     "phone": find_contact,
-    "show": show_all_contacts,
+    "show_all": show_all_contacts,
+    "show": show_n_contacts,
     "remove": remove_contact,
     "commands": show_all_commands,
     "add_phone": add_phone,
@@ -138,7 +153,7 @@ handler = {
 
 
 def main():
-    tprint("AdressBook", font="tarty1")
+    tprint("Contact book", font="tarty1")
     while True:
 
         command = input("Enter command: ").lower().strip().split()
@@ -157,15 +172,16 @@ def main():
 
 
 if __name__ == "__main__":
-    contacts = AdressBook()
-    contacts.add_record(Record("liza", "123", "03.05.2005"))
-    contacts.add_record(Record("artur", "7878", "29.02.2003"))
-    contacts.add_record(Record("olya", "65446", "12.08.2003"))
-    contacts.add_record(Record("karina", "3711323"))
-    contacts.add_record(Record("vlad", "987987", "15.06.2003"))
-    contacts.add_record(Record("egor", "16454", "22.04.2003"))
-    contacts.add_record(Record("miha", "654987"))
-    contacts.add_record(Record("nikita", "13213879", "06.06.2003"))
-    contacts.add_record(Record("vladimirovich", "13213879", "06.06.2003"))
+    contacts = AddressBook()
+    contacts.add_record(Record("liza", "097123123", "03.05.2005"))
+    contacts.add_record(Record("artur", "098712354", "29.02.2003"))
+    contacts.add_record(Record("olya", "0681231233", "12.08.2003"))
+    contacts.add_record(Record("karina", "0681231833"))
+    contacts.add_record(Record("vlad", "076145683", "15.06.2003"))
+    contacts.add_record(Record("egor", "0681231233", "22.04.2003"))
+    contacts.add_record(Record("miha", "06811813"))
+    contacts.add_record(Record("nikita", "0684456233", "06.06.2003"))
+    contacts.add_record(Record("ekaterinaPetrovna", "09868733", "06.06.2003"))
+    contacts.add_record(Record("magazinIgrashok", "09868156843"))
 
     main()
